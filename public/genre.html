@@ -62,14 +62,28 @@
 
         data
           .sort((aa, bb) => {
-            return aa.key > bb.key ? -1 : 1;
+            return new Date(aa.time).getTime() > new Date(bb.time).getTime()
+              ? -1
+              : 1;
           })
           .map(m => {
+            const p = document.createElement('p');
             const a = document.createElement('a');
             const hr = document.createElement('hr');
+
+            p.textContent = moment(new Date(m.time)).format(
+              'YYYY-MM-DD HH:mm:ss'
+            );
+            p.style.fontSize = '14px';
+            p.style.margin = '0px';
+            // p.style.whiteSpace = 'pre-wrap';
+
             a.textContent =
               m.title +
               moment(new Date(m.key * 1000)).format('YYYY-MM-DD HH:mm:ss');
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
+            a.className = 'text';
 
             if (m.site === 1) {
               a.href = `https://5chpro.pages.dev/board?q=${m.url}`;
@@ -77,10 +91,9 @@
               a.href = `https://5chpro.pages.dev/board3?q=${m.url}`;
             }
 
-            a.setAttribute('target', '_blank');
-            a.setAttribute('rel', 'noopener noreferrer');
-            a.className = 'text';
+            // hr.style.margin = '0px';
 
+            root.appendChild(p);
             root.appendChild(a);
             root.appendChild(hr);
           });

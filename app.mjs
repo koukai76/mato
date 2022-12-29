@@ -17,7 +17,7 @@ const GENRE = {
 };
 
 const SQL =
-  'INSERT IGNORE INTO matome (`key`, `title`, `date`, `genre`, `site`, `url`) VALUES ?';
+  'INSERT IGNORE INTO matome (`key`, `title`, `date`, `time`, `genre`, `site`, `url`) VALUES ?';
 
 const connection = mysql.createConnection({
   host: process.env.host,
@@ -84,6 +84,7 @@ const kyodemo = async key => {
           .replace(':', '')
           .trim(),
         now.format('YYYY-MM-DD'),
+        new Date(),
         key,
         2,
         'https://www.kyodemo.net' + m.parentNode._attrs.href,
@@ -123,6 +124,7 @@ const ranking = async num => {
       sp[2],
       target[i].textContent,
       now.format('YYYY-MM-DD'),
+      new Date(),
       num,
       1,
       'https://' + sp[0] + '/test/read.cgi/' + sp[1] + '/' + sp[2],
@@ -174,10 +176,11 @@ cron.schedule('*/10 * * * *', async () => {
     if (num === 0 || num === 5) {
       return;
     }
+
     await kyodemo(num).catch(e => '');
     await ranking(num).catch(e => '');
     console.log(num, 'fin');
   } catch (error) {}
 });
 
-// (async function () {})();
+(async function () {})();
