@@ -46,6 +46,7 @@
     <div id="app"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>
+
     <script>
       const GENRE = {
         1: 'news',
@@ -71,9 +72,9 @@
             const a = document.createElement('a');
             const hr = document.createElement('hr');
 
-            p.textContent = moment(new Date(m.time)).format(
-              'YYYY-MM-DD HH:mm:ss'
-            );
+            p.textContent = new Date(m.time).toLocaleString({
+              timeZone: 'Asia/Tokyo',
+            });
             p.style.fontSize = '14px';
             p.style.margin = '0px';
             // p.style.whiteSpace = 'pre-wrap';
