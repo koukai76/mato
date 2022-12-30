@@ -31,19 +31,6 @@ const connection = mysql.createConnection({
 
 const query = (sql, params) => {
   return new Promise((resolve, reject) => {
-    connection.query(sql, [params], (err, results, fields) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      resolve({ results: results, fields: fields });
-    });
-  });
-};
-
-const query2 = (sql, params) => {
-  return new Promise((resolve, reject) => {
     connection.query(sql, params, (err, results, fields) => {
       if (err) {
         reject(err);
@@ -92,7 +79,7 @@ const kyodemo = async key => {
     } catch (error) {}
   });
 
-  await query(SQL, params);
+  await query(SQL, [params]);
 };
 
 const ranking = async num => {
@@ -131,7 +118,7 @@ const ranking = async num => {
     ];
   });
 
-  await query(SQL, params);
+  await query(SQL, [params]);
 };
 
 const app = express();
@@ -153,7 +140,7 @@ app.get('/api/search', async (req, res) => {
     const genre = req.query.genre;
     const date = req.query.date;
 
-    const ret = await query2(
+    const ret = await query(
       'select * from matome where date = ? and genre = ?',
       [date, genre]
     );
